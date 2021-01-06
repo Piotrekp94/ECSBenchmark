@@ -1,3 +1,6 @@
+using System;
+using System.Collections.Generic;
+using NUnit.Framework;
 using Unity.Entities;
 using Unity.Mathematics;
 using Unity.Rendering;
@@ -9,36 +12,47 @@ using Random = UnityEngine.Random;
 public class mcSpawner : MonoBehaviour
 {
     // Start is called before the first frame update
-    [SerializeField] private Mesh _mesh;
-    [SerializeField] private Material _material;
-    [SerializeField] private Text _text;
+    [SerializeField] private Mesh mesh;
+    [SerializeField] private Material material;
+    [SerializeField] private Text text;
+    
+    [SerializeField] private float amplitude;
+    [SerializeField] private float speed;
+    [SerializeField] private float xOffset;
+    [SerializeField] private float yOffset;
+    [SerializeField] private DesiredFunctionEnum desiredFunctionEnum;
 
+    private List<Entity> entites;
     private int count = 0;
-    private int x = 0;
-    private int z = 0;
+    private EntityManager _entityManager;
     private void Start()
     {
-        
-        var entityManager = World.DefaultGameObjectInjectionWorld.EntityManager;
-        for (int i = 0; i < 100; i++)
+        entites = new List<Entity>();
+        _entityManager = World.DefaultGameObjectInjectionWorld.EntityManager;
+        for (var i = 0; i < 100; i++)
         {
-            for (int j = 0; j < 100; j++)
+            for (var j = 0; j < 100; j++)
             {
-                var archetype = entityManager.CreateArchetype(
+                var archetype = _entityManager.CreateArchetype(
                     typeof(Translation),
                     typeof(Rotation),
                     typeof(RenderMesh),
                     typeof(RenderBounds),
                     typeof(LocalToWorld));
-                var e = entityManager.CreateEntity(archetype);
-                entityManager.AddComponentData(e, new Translation {Value = new float3(i,  0f, j)});
-                entityManager.AddComponentData(e, new WaveData(2, 0.1f, 0.1f));
-                entityManager.AddSharedComponentData(e, new RenderMesh {mesh = _mesh, material = _material});
-            
+                var e = _entityManager.CreateEntity(archetype);
+                _entityManager.AddComponentData(e, new Translation {Value = new float3(i,  0f, j)});
+                _entityManager.AddComponentData(e, new WaveData(amplitude, speed, xOffset, yOffset, desiredFunctionEnum));
+                _entityManager.AddSharedComponentData(e, new RenderMesh {mesh = mesh, material = material});
+                entites.Add(e);
                 count++;
             }
         }
 
-        _text.text = count.ToString();
+        text.text = count.ToString();
+    }
+
+    private void Update()
+    {
+        entites.ForEach(entity => _entityManager.AddComponentData(entity, new WaveData(amplitude, speed, xOffset, yOffset, desiredFunctionEnum)));
     }
 }

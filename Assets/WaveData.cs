@@ -5,13 +5,17 @@ using UnityEngine;
 
 public struct WaveData : IComponentData
 {
-    public int speed;
+    public float speed;
+    public float amplitude;
     public float xOffset;
     public float zOffset;
+    public DesiredFunctionEnum desiredFunctionEnum;
 
-    public WaveData(int i, float xOffset, float zOffset)
+    public WaveData(float amplitude, float speed, float xOffset, float zOffset, DesiredFunctionEnum desiredFunctionEnum)
     {
-        speed = i;
+        this.desiredFunctionEnum = desiredFunctionEnum;
+        this.amplitude = amplitude;
+        this.speed = speed;
         this.xOffset = xOffset;
         this.zOffset = zOffset;
     }

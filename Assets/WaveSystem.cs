@@ -1,7 +1,6 @@
 using Unity.Entities;
 using Unity.Mathematics;
 using Unity.Transforms;
-using UnityEngine;
 
 public class WaveSystem : ComponentSystem
 {
@@ -9,8 +8,20 @@ public class WaveSystem : ComponentSystem
     {
         Entities.ForEach((ref Translation t, ref WaveData waveData) =>
         {
-            var zPosition = 5 * math.sin((float) Time.ElapsedTime * waveData.speed + t.Value.x * waveData.xOffset + t.Value.z * waveData.zOffset);
+            var zPosition = waveData.amplitude * getFunctionBasedOnDesiredFunction(waveData, t);
             t.Value = new float3(t.Value.x, zPosition, t.Value.z);
         });
+    }
+
+    private float getFunctionBasedOnDesiredFunction(WaveData waveData, Translation t)
+    {
+        if (waveData.desiredFunctionEnum == DesiredFunctionEnum.Sin)
+        {
+            return math.sin((float) Time.ElapsedTime * waveData.speed + t.Value.x * waveData.xOffset +
+                            t.Value.z * waveData.zOffset);
+        }
+
+        return math.sign(math.sin((float) Time.ElapsedTime * waveData.speed + t.Value.x * waveData.xOffset +
+                                  t.Value.z * waveData.zOffset));
     }
 }
