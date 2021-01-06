@@ -2,7 +2,7 @@
 public enum DesiredFunctionEnum
 {
     Sin,
-    SgnSin,
-    Autumn,
+    SquareWave,
+    SawtoothWave,
     Winter
 }

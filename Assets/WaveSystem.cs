@@ -16,12 +16,15 @@ public class WaveSystem : ComponentSystem
     private float getFunctionBasedOnDesiredFunction(WaveData waveData, Translation t)
     {
         if (waveData.desiredFunctionEnum == DesiredFunctionEnum.Sin)
-        {
             return math.sin((float) Time.ElapsedTime * waveData.speed + t.Value.x * waveData.xOffset +
                             t.Value.z * waveData.zOffset);
-        }
+        if (waveData.desiredFunctionEnum == DesiredFunctionEnum.SquareWave)
+            return math.sign(math.sin((float) Time.ElapsedTime * waveData.speed + t.Value.x * waveData.xOffset +
+                                      t.Value.z * waveData.zOffset));
 
-        return math.sign(math.sin((float) Time.ElapsedTime * waveData.speed + t.Value.x * waveData.xOffset +
-                                  t.Value.z * waveData.zOffset));
+        return (float) (Time.ElapsedTime * waveData.speed/10 + t.Value.x * waveData.xOffset +
+            t.Value.z * waveData.zOffset - math.floor(t.Value.x * waveData.xOffset +
+                                                      t.Value.z * waveData.zOffset +
+                                                      Time.ElapsedTime * waveData.speed/10 + 0.5f));
     }
 }

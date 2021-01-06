@@ -14,7 +14,6 @@ public class mcSpawner : MonoBehaviour
     // Start is called before the first frame update
     [SerializeField] private Mesh mesh;
     [SerializeField] private Material material;
-    [SerializeField] private Text text;
     
     [SerializeField] private float amplitude;
     [SerializeField] private float speed;
@@ -47,8 +46,6 @@ public class mcSpawner : MonoBehaviour
                 count++;
             }
         }
-
-        text.text = count.ToString();
     }
 
     private void Update()
