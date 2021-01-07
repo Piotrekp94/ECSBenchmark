@@ -22,7 +22,6 @@ public class mcSpawner : MonoBehaviour
     [SerializeField] private DesiredFunctionEnum desiredFunctionEnum;
 
     private List<Entity> entites;
-    private int count = 0;
     private EntityManager _entityManager;
     private void Start()
     {
@@ -43,12 +42,11 @@ public class mcSpawner : MonoBehaviour
                 _entityManager.AddComponentData(e, new WaveData(amplitude, speed, xOffset, yOffset, desiredFunctionEnum));
                 _entityManager.AddSharedComponentData(e, new RenderMesh {mesh = mesh, material = material});
                 entites.Add(e);
-                count++;
             }
         }
     }
 
-    private void Update()
+    public void UpdateData()
     {
         entites.ForEach(entity => _entityManager.AddComponentData(entity, new WaveData(amplitude, speed, xOffset, yOffset, desiredFunctionEnum)));
     }
