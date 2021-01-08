@@ -15,6 +15,8 @@ public class mcSpawner : MonoBehaviour
     [SerializeField] private Mesh mesh;
     [SerializeField] private Material material;
     
+    [SerializeField] private int gridSizeX;
+    [SerializeField] private int gridSizeY;
     [SerializeField] private float amplitude;
     [SerializeField] private float speed;
     [SerializeField] private float xOffset;
@@ -27,9 +29,9 @@ public class mcSpawner : MonoBehaviour
     {
         entites = new List<Entity>();
         _entityManager = World.DefaultGameObjectInjectionWorld.EntityManager;
-        for (var i = 0; i < 100; i++)
+        for (var i = 0; i < gridSizeX; i++)
         {
-            for (var j = 0; j < 100; j++)
+            for (var j = 0; j < gridSizeY; j++)
             {
                 var archetype = _entityManager.CreateArchetype(
                     typeof(Translation),
