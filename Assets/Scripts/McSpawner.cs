@@ -9,10 +9,10 @@ using UnityEngine;
 using UnityEngine.UI;
 using Random = UnityEngine.Random;
 
-public class mcSpawner : MonoBehaviour
+public class McSpawner : MonoBehaviour
 {
     // Start is called before the first frame update
-    [SerializeField] private Mesh mesh;
+    [SerializeField][ReadOnly] private Mesh mesh;
     [SerializeField] private Material material;
     
     [SerializeField] private int gridSizeX;
@@ -23,11 +23,11 @@ public class mcSpawner : MonoBehaviour
     [SerializeField] private float yOffset;
     [SerializeField] private DesiredFunctionEnum desiredFunctionEnum;
 
-    private List<Entity> entites;
+    private List<Entity> _entites;
     private EntityManager _entityManager;
     private void Start()
     {
-        entites = new List<Entity>();
+        _entites = new List<Entity>();
         _entityManager = World.DefaultGameObjectInjectionWorld.EntityManager;
         for (var i = 0; i < gridSizeX; i++)
         {
@@ -43,13 +43,13 @@ public class mcSpawner : MonoBehaviour
                 _entityManager.AddComponentData(e, new Translation {Value = new float3(i,  0f, j)});
                 _entityManager.AddComponentData(e, new WaveData(amplitude, speed, xOffset, yOffset, desiredFunctionEnum));
                 _entityManager.AddSharedComponentData(e, new RenderMesh {mesh = mesh, material = material});
-                entites.Add(e);
+                _entites.Add(e);
             }
         }
     }
 
     public void UpdateData()
     {
-        entites.ForEach(entity => _entityManager.AddComponentData(entity, new WaveData(amplitude, speed, xOffset, yOffset, desiredFunctionEnum)));
+        _entites.ForEach(entity => _entityManager.AddComponentData(entity, new WaveData(amplitude, speed, xOffset, yOffset, desiredFunctionEnum)));
     }
 }

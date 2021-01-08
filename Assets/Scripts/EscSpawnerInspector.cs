@@ -3,13 +3,13 @@ using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
 
-[CustomEditor(typeof(mcSpawner))]
+[CustomEditor(typeof(McSpawner))]
 public class EscSpawnerInspector : Editor
 {
     public override void OnInspectorGUI()
     {
         DrawDefaultInspector();
-        var spawner = (mcSpawner) target;
+        var spawner = (McSpawner) target;
         if (GUILayout.Button("Update"))
         {
             spawner.UpdateData();

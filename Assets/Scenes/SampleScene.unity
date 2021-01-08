@@ -485,6 +485,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
   material: {fileID: 2100000, guid: 7ffe688d58ea1f1428bc959db611997f, type: 2}
+  gridSizeX: 100
+  gridSizeY: 100
   amplitude: 3
   speed: 1
   xOffset: 0.2
