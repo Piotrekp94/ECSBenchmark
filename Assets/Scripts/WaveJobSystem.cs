@@ -23,6 +23,7 @@ public class WaveJobSystem : SystemBase
         return waveData.desiredFunctionEnum switch
         {
             DesiredFunctionEnum.Sin => math.sin(x),
+            DesiredFunctionEnum.AbsoluteSin => math.abs(math.sin(x)),
             DesiredFunctionEnum.SquareWave => math.sign(math.sin(x)),
             DesiredFunctionEnum.SawtoothWave => x - math.floor(x + 0.5f),
             DesiredFunctionEnum.TriangleWave => 4 * (x - 0.5f * math.floor(2 * x + 0.5f)) *
