@@ -3,5 +3,6 @@ public enum DesiredFunctionEnum
 {
     Sin,
     SquareWave,
-    SawtoothWave
+    SawtoothWave,
+    TriangleWave,
 }

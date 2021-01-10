@@ -1,3 +1,4 @@
+using System;
 using Unity.Entities;
 using Unity.Mathematics;
 using Unity.Transforms;
@@ -17,17 +18,16 @@ public class WaveJobSystem : SystemBase
     private static float getFunctionBasedOnDesiredFunction(WaveData waveData, Translation translation,
         float elapsedTime)
     {
+        var x = elapsedTime * waveData.speed + translation.Value.x * waveData.xOffset +
+                translation.Value.z * waveData.zOffset;
         return waveData.desiredFunctionEnum switch
         {
-            DesiredFunctionEnum.Sin => math.sin(elapsedTime * waveData.speed + translation.Value.x * waveData.xOffset +
-                                                translation.Value.z * waveData.zOffset),
-            DesiredFunctionEnum.SquareWave => math.sign(math.sin(elapsedTime * waveData.speed +
-                                                                 translation.Value.x * waveData.xOffset +
-                                                                 translation.Value.z * waveData.zOffset)),
-            _ => elapsedTime * waveData.speed / 10 + translation.Value.x * waveData.xOffset +
-                translation.Value.z * waveData.zOffset - math.floor(translation.Value.x * waveData.xOffset +
-                                                                    translation.Value.z * waveData.zOffset +
-                                                                    elapsedTime * waveData.speed / 10 + 0.5f)
+            DesiredFunctionEnum.Sin => math.sin(x),
+            DesiredFunctionEnum.SquareWave => math.sign(math.sin(x)),
+            DesiredFunctionEnum.SawtoothWave => x - math.floor(x + 0.5f),
+            DesiredFunctionEnum.TriangleWave => 4 * (x - 0.5f * math.floor(2 * x + 0.5f)) *
+                                                math.pow(-1, math.floor(2 * x + 0.5f)),
+            _ => throw new ArgumentOutOfRangeException()
         };
     }
 }
