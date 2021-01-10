@@ -10,9 +10,12 @@ public class EscSpawnerInspector : Editor
     {
         DrawDefaultInspector();
         var spawner = (McSpawner) target;
+        GUI.enabled = Application.isPlaying;
         if (GUILayout.Button("Update"))
         {
             spawner.UpdateData();
         }
+        GUI.enabled = true;
+
     }
 }
