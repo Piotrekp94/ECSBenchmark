@@ -17,16 +17,17 @@ public class WaveJobSystem : SystemBase
     private static float getFunctionBasedOnDesiredFunction(WaveData waveData, Translation translation,
         float elapsedTime)
     {
-        if (waveData.desiredFunctionEnum == DesiredFunctionEnum.Sin)
-            return math.sin(elapsedTime * waveData.speed + translation.Value.x * waveData.xOffset +
-                            translation.Value.z * waveData.zOffset);
-        if (waveData.desiredFunctionEnum == DesiredFunctionEnum.SquareWave)
-            return math.sign(math.sin(elapsedTime * waveData.speed + translation.Value.x * waveData.xOffset +
-                                      translation.Value.z * waveData.zOffset));
-
-        return elapsedTime * waveData.speed / 10 + translation.Value.x * waveData.xOffset +
-            translation.Value.z * waveData.zOffset - math.floor(translation.Value.x * waveData.xOffset +
-                                                                translation.Value.z * waveData.zOffset +
-                                                                elapsedTime * waveData.speed / 10 + 0.5f);
+        return waveData.desiredFunctionEnum switch
+        {
+            DesiredFunctionEnum.Sin => math.sin(elapsedTime * waveData.speed + translation.Value.x * waveData.xOffset +
+                                                translation.Value.z * waveData.zOffset),
+            DesiredFunctionEnum.SquareWave => math.sign(math.sin(elapsedTime * waveData.speed +
+                                                                 translation.Value.x * waveData.xOffset +
+                                                                 translation.Value.z * waveData.zOffset)),
+            _ => elapsedTime * waveData.speed / 10 + translation.Value.x * waveData.xOffset +
+                translation.Value.z * waveData.zOffset - math.floor(translation.Value.x * waveData.xOffset +
+                                                                    translation.Value.z * waveData.zOffset +
+                                                                    elapsedTime * waveData.speed / 10 + 0.5f)
+        };
     }
 }
