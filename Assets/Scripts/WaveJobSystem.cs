@@ -11,7 +11,7 @@ public class WaveJobSystem : SystemBase
         {
             var zPosition = waveData.amplitude * getFunctionBasedOnDesiredFunction(waveData, translation, elapsedTime);
             translation.Value = new float3(translation.Value.x, zPosition, translation.Value.z);
-        }).Run();
+        }).ScheduleParallel();
     }
 
     private static float getFunctionBasedOnDesiredFunction(WaveData waveData, Translation translation,
